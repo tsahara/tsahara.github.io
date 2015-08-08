@@ -1,0 +1,144 @@
+<html>
+  <head>
+    <title>xengine in JavaScript</title>
+    <script type="text/javascript">
+<!--
+var speed = 16;
+var wait = 1;
+var count = 0;
+var lastcount = 0;
+var ctx;
+
+
+onload = function() {
+	var canvas = document.getElementById('canvas');
+    ctx = canvas.getContext('2d');
+    setInterval("showrpm()", 1000);
+	draw();
+}
+
+function draw() {
+  var r = 50;
+
+  ctx.clearRect(0, 0, 200, 500);
+  ctx.lineWidth = 3.0;
+
+  cx = 3/2 * r;
+  cy = 4   * r;
+
+  x1 = cx - 1 / 2 * r;
+  x2 = cx + 1 / 2 * r;
+  y1 = 1/2 * r;
+  y2 = cy - Math.sqrt(3) / 2 * r;
+  ctx.strokeStyle = "red";
+  ctx.beginPath();
+  ctx.arc(cx, cy, r, -1/3*Math.PI, 4/3*Math.PI, false);
+  ctx.moveTo(x1, y2);
+  ctx.lineTo(x1, y1);
+  ctx.lineTo(x2, y1);
+  ctx.lineTo(x2, y2);
+  ctx.stroke();
+  
+  ctx.lineWidth = 6.0;
+  l2 = 1/2*r;
+  y11 = y1 + 1/3*r;
+  y12 = y1 + 2/3*r;
+  y13 = y1 + r;
+  ctx.beginPath();
+  ctx.moveTo(x1, y11);
+  ctx.lineTo(x1 - l2, y11);
+  ctx.moveTo(x2, y11);
+  ctx.lineTo(x2 + l2, y11);
+  ctx.moveTo(x1, y12);
+  ctx.lineTo(x1 - l2, y12);
+  ctx.moveTo(x2, y12);
+  ctx.lineTo(x2 + l2, y12);
+  ctx.moveTo(x1, y13);
+  ctx.lineTo(x1 - l2, y13);
+  ctx.moveTo(x2, y13);
+  ctx.lineTo(x2 + l2, y13);
+  ctx.stroke();
+  ctx.lineWidth = 3.0;
+  
+  r1 = 3/4*r;
+  deg1 = (count/speed-1/7) * 2*Math.PI;
+  deg2 = (count/speed+1/7) * 2*Math.PI;
+  x1 = cx + Math.cos(deg1)*r1;
+  y1 = cy + Math.sin(deg1)*r1;
+  x2 = cx + Math.cos(deg2)*r1;
+  y2 = cy + Math.sin(deg2)*r1;
+  ctx.fillStyle = "green";
+  ctx.beginPath()
+  ctx.moveTo(cx, cy);
+  ctx.lineTo(x1, y1);
+  ctx.lineTo(x2, y2);
+  ctx.lineTo(cx, cy);
+  ctx.fill();
+  ctx.arc(cx, cy, r1, deg1, deg2, false);
+  ctx.fill();
+
+  r3 = 1/2*r;
+  deg = (count/speed + 1/2) * 2*Math.PI;
+  x3 = cx + Math.cos(deg)*r3;
+  y3 = cy + Math.sin(deg)*r3;
+  ctx.strokeStyle = "cyan";
+  ctx.beginPath()
+  ctx.moveTo(cx, cy);
+  ctx.lineTo(x3, y3);
+  ctx.stroke();
+
+  r2 = 1/6*r;
+  ctx.fillStyle = "gray";
+  ctx.beginPath();
+  ctx.arc(cx, cy, r2, 0, 2*Math.PI, true);
+  ctx.fill();
+
+  l = Math.sqrt(Math.pow(2.65*r, 2) - Math.pow(r1*Math.cos(deg), 2));
+  y4 = y3 - l;
+  ctx.beginPath();
+  ctx.moveTo(x3, y3);
+  ctx.lineTo(cx, y4);
+  ctx.stroke();
+
+  x5 = cx - 3/7*r;
+  x6 = cx + 3/7*r;
+  y5 = y4 - 1/3*r;
+  y6 = y4 + 1/3*r;
+  ctx.beginPath();
+  ctx.moveTo(x5, y5);
+  ctx.lineTo(x6, y5);
+  ctx.lineTo(x6, y6);
+  ctx.lineTo(x5, y6);
+  ctx.fill();
+
+  y7 = y5 + 1/16*r;
+  ctx.beginPath();
+  ctx.moveTo(x5, y7);
+  ctx.lineTo(x6, y7);
+  ctx.stroke();
+  
+  r4 = 1/12*r;
+  ctx.fillStyle = "cyan";
+  ctx.beginPath();
+  ctx.arc(cx, y4, r4, 0, 2*Math.PI, true);
+  ctx.fill();
+  
+  count = count + 1;
+  setTimeout(draw, wait);
+}
+
+function showrpm() {
+  var span = document.getElementById('rpm');
+  var rpm = ((count - lastcount) / speed * 60).toFixed(1) + "rpm"
+  var fps = (count - lastcount) + "fps"
+  span.innerHTML = rpm + " (" + fps + ")"
+  lastcount = count;
+}
+-->
+	</script>
+  </head>
+  <body>
+    <canvas id="canvas" width="150" height="300"></canvas>
+    <span id="rpm"></span>
+  </body>
+</html>

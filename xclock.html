@@ -1,0 +1,97 @@
+<html>
+  <head>
+    <title>xclock in JavaScript</title>
+    <script type="text/javascript">
+<!--
+var speed = 16;
+var wait = 1;
+var pi = Math.PI
+var r = 100
+var ctx;
+var cx
+var cy
+
+onload = function() {
+	var canvas = document.getElementById('canvas');
+    ctx = canvas.getContext('2d');
+	setInterval("draw()", 100)
+}
+
+function DrawSecond() {
+  ctx.strokeStyle = "black";
+  for (i = 0; i < 60; i++) {
+    fract = (i % 5 == 0) ? 0.90 : 0.95
+    t = -pi/2 + (2*pi * i/60)
+  	x1 = cx + r * Math.cos(t)
+  	y1 = cy + r * Math.sin(t)
+  	x2 = cx + r * fract * Math.cos(t)
+  	y2 = cy + r * fract * Math.sin(t)
+
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+  }
+}
+
+function DrawHand(tic, color, f) {
+  ctx.fillStyle = color
+  ctx.beginPath()
+  pi = Math.PI
+  w = 0.07
+
+//(p/2 - t)
+
+//(-p/2 + t)
+  t = pi + 2*pi * tic/3600
+  x1 = cx + r * w * Math.cos(t)
+  y1 = cy + r * w * Math.sin(t)
+  ctx.moveTo(x1, y1)
+  
+  t = 2*pi * tic/3600
+  x2 = cx + r * w * Math.cos(t)
+  y2 = cy + r * w * Math.sin(t)
+  ctx.lineTo(x2, y2)
+
+  t = -pi/2 + 2*pi * tic/3600
+  x3 = cx + r * f * Math.cos(t)
+  y3 = cy + r * f * Math.sin(t)
+  ctx.lineTo(x3, y3)
+
+ctx.stroke()
+  ctx.fill()
+}
+
+function draw() {
+  ctx.clearRect(0, 0, 300, 320);
+  ctx.lineWidth = 1.0;
+
+  cx = cy = 150
+  r = 150
+
+  DrawSecond()
+  date = new Date()
+  h = date.getHours()
+  m = date.getMinutes()
+  s = date.getSeconds()
+
+  DrawHand(h * 300 + m * 5, "rgba(128, 0, 0, 0.75)", 0.4)
+  DrawHand(m * 60 + s, "rgba(0, 128, 128, 0.75)", 0.7)
+
+  datestr = ("0"+h).substr(-2) + ":" +
+            ("0"+m).substr(-2) + ":" +
+            ("0"+s).substr(-2)
+
+  ctx.fillStyle = "rgb(128, 128, 128)"
+  ctx.font = "20px Sanserif"
+  ctx.textAlign = "center"
+//  ctx.textBasline = "top";
+  ctx.fillText(datestr, 150, 320);
+}
+-->
+	</script>
+  </head>
+  <body>
+    <canvas id="canvas" width="300" height="320"></canvas>
+  </body>
+</html>
